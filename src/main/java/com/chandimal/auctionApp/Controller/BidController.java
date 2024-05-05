@@ -3,7 +3,6 @@ package com.chandimal.auctionApp.Controller;
 import com.chandimal.auctionApp.DTO.BidDTO;
 import com.chandimal.auctionApp.DTO.ResponseDTO;
 import com.chandimal.auctionApp.Service.BidService;
-import com.chandimal.auctionApp.Service.BidServiceImp;
 import com.chandimal.auctionApp.Util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 public class BidController {
 
     @Autowired
-    private BidServiceImp bidService;
+    private BidService bidService;
 
     @PostMapping("placeBid")
     public ResponseEntity placeBid(@RequestBody BidDTO bidDTO) throws ExecutionException, InterruptedException {
