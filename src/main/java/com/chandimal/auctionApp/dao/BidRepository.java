@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface BidRepository extends JpaRepository<Bid,Integer> {
 
-    @Query(nativeQuery = true,value ="select * from bid where auction_id=:auction_id")
+    @Query(nativeQuery = true,value ="select * from bid where auction_id=:auction_id order by amount desc")
     List<Bid> getBidsOnitem(@Param("auction_id")int auction_id);
+
 
 }
