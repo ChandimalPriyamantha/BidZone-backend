@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @CrossOrigin("http://localhost:3000")
 @RestController
@@ -22,15 +24,17 @@ public class MyBidsController {
 
     //Get all bids of selected user
     @GetMapping("/getMyBids/{user_name}")
-    public List<Object> getMyBids(@PathVariable String user_name){
-        return myBidsService.getMyBids(user_name);
+    public List<Object> getMyBids(@PathVariable String user_name) throws ExecutionException, InterruptedException {
+        Future<List<Object>> future = myBidsService.getMyBids(user_name);
+        return future.get();            // Waits for the async operation to complete
     }
 
 
     //update Bid
     @PutMapping("/updateBid")
-    public String updateBid(@RequestBody BidDTO bidDTO){
-        return myBidsService.updateBid(bidDTO);
+    public String updateBid(@RequestBody BidDTO bidDTO) throws ExecutionException, InterruptedException {
+        Future<String> future = myBidsService.updateBid(bidDTO);
+        return future.get();            // Waits for the async operation to complete
     }
 
     @DeleteMapping("/deleteBid")
