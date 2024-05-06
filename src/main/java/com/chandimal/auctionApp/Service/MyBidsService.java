@@ -1,9 +1,11 @@
 package com.chandimal.auctionApp.Service;
 
 
+import com.chandimal.auctionApp.DTO.BidDTO;
 import com.chandimal.auctionApp.DTO.ResponseDTO;
 import com.chandimal.auctionApp.Util.VarList;
 import com.chandimal.auctionApp.dao.MyBidsRepository;
+import com.chandimal.auctionApp.entity.Bid;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +23,36 @@ public class MyBidsService {
     private ModelMapper modelMapper;
     @Autowired
     private ResponseDTO responseDTO;
+    @Autowired
+    ModelMapper mp;
 
 
 
     //Get all bids of selected user
-    public ResponseDTO getMyBids(String user_name){
-        try{
-            List<Object> bidList= myBidsRepository.getMyBids(user_name);
-            responseDTO.setCode(VarList.RIP_SUCCESS);
-            responseDTO.setContent(bidList);
-            responseDTO.setMessage("Successfully get your bids");
-        }catch (Exception e){
-            responseDTO.setCode(VarList.RIP_ERROR);
-            responseDTO.setContent(user_name);
-            responseDTO.setMessage("Error with getting your bid list");
+    public List<Object> getMyBids(String user_name){
+         return myBidsRepository.getMyBids(user_name);
+
+    }
+
+
+    //update bid
+    public String updateBid(BidDTO bidDTO){
+        if(myBidsRepository.existsById(bidDTO.getId())){
+
+            myBidsRepository.save(mp.map(bidDTO, Bid.class));
+            return ("Updated successfully");
+        }else{
+            return ("Matching data is not found");
         }
 
-        return responseDTO;
+    }
+
+
+    //delete bid
+    public void deleteBid (BidDTO bidDTO){
+        if(myBidsRepository.existsById(bidDTO.getId())){
+            myBidsRepository.delete(mp.map(bidDTO,Bid.class));
+        }
+
     }
 }
