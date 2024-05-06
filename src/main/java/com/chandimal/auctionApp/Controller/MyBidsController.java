@@ -16,8 +16,9 @@ public class MyBidsController {
     @Autowired
     MyBidsService myBidsService;
 
+
     //Get all bids of selected user
-    @GetMapping("/getMyBids{user_name}")
+    @GetMapping("/getMyBids/{user_name}")
     public ResponseEntity getMyBids(@PathVariable String user_name){
         ResponseDTO responseDTO=myBidsService.getMyBids(user_name);
         if(responseDTO.getCode().equals(VarList.RIP_SUCCESS)){
