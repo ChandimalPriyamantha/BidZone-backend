@@ -17,7 +17,7 @@ public class Auction {
     @Column(name = "closing_time")
     private String closingTime;
 
-    @Column(name = "created_at")
+    @Column(name = "created_time")
     private String createdTime;
 
     @Column(name = "starting_price")
