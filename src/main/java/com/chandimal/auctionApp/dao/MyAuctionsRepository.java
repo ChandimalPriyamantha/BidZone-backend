@@ -9,6 +9,6 @@ import java.util.List;
 public interface MyAuctionsRepository extends JpaRepository<Auction,Long> {
 
     //Get all my auctions providing username
-    @Query(nativeQuery = true, value = "select * from auctions where ")
-    List<Object> getMyBids(String user_name);
+    @Query(nativeQuery = true, value = "select * from auction where user_name=:user_name ")
+    List<Object> getMyAuctions(String user_name);
 }

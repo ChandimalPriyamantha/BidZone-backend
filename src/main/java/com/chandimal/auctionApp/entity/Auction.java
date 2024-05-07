@@ -37,4 +37,7 @@ public class Auction {
 
     @Column(name = "user_name")
     private String userName;
+
+    @Column(name = "highest_bid")
+    private int highestBid;
 }
