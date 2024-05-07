@@ -1,5 +1,7 @@
 package com.chandimal.auctionApp.Controller;
 
+import com.chandimal.auctionApp.DTO.AuctionDTO;
+import com.chandimal.auctionApp.DTO.BidDTO;
 import com.chandimal.auctionApp.Service.MyAuctionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,17 @@ public class MyAuctionsController {
         return future.get();    // Waits for the async operation to complete
     }
 
+    @PutMapping("/updateAuction")
+    public String updateAuction(@RequestBody AuctionDTO auctionDTO) throws ExecutionException, InterruptedException {
+        Future<String> future = myAuctionsService.updateAuction(auctionDTO);
+        return future.get();            // Waits for the async operation to complete
+    }
+
+
+    @DeleteMapping("/deleteAuction")
+    public void deleteAuction(@RequestBody AuctionDTO auctionDTO){
+        myAuctionsService.deleteAuction(auctionDTO);
+    }
 
 
 }
