@@ -41,13 +41,6 @@ public class BidService extends BidSubject{
     private Auction auction;
 
 
-    private double highestBid = 0;
-
-
-    public double getHighestBid() {
-        return highestBid;
-    }
-
     public void addObserver(BidObserver observer) {
         addObserver(observer);
     }
@@ -62,21 +55,6 @@ public class BidService extends BidSubject{
 
             try {
                 bidRepository.save(modelMapper.map(bidDTO,Bid.class));
-
-                optionalauction=auctionRepository.findById(bidDTO.getAuction_id());
-
-                if (optionalauction.isPresent()) {
-
-                    auction = optionalauction.get();
-                   if(auction.getHighest_bid()<bidDTO.getAmount())
-                   {
-                       auction.setHighest_bid(bidDTO.getAmount());
-                       auctionRepository.save(auction);
-
-                       notifyObservers(bidDTO.getAmount());
-                   }
-
-                }
 
                 responseDTO.setCode(VarList.RIP_SUCCESS);
                 responseDTO.setContent(bidDTO);
@@ -93,8 +71,24 @@ public class BidService extends BidSubject{
 
     public CompletableFuture<Double> getHighestBid(long auction_id) {
         return CompletableFuture.supplyAsync(() -> {
-            optionalauction = auctionRepository.findById(auction_id);
-            Double highest_bid = optionalauction.get().getHighest_bid();
+
+            Double highest_bid = bidRepository.getHighestBid(auction_id);
+
+
+            optionalauction=auctionRepository.findById(auction_id);
+
+            if (optionalauction.isPresent()) {
+
+                auction = optionalauction.get();
+
+                auction.setHighest_bid(highest_bid);
+                auctionRepository.save(auction);
+
+                notifyObservers(highest_bid);
+
+
+            }
+
             return highest_bid;
         });
     }
@@ -102,16 +96,7 @@ public class BidService extends BidSubject{
 
 
 
-//    public List<String> getBiddersOnITem(Long auction_id)
-//    {
-//            List<Bid> bidList=bidRepository.getBidsOnitem(auction_id);
-//            List<String> bidders = null;
-//            for(Bid bid:bidList)
-//            {
-//                bidders.add(bid.getUser_name());
-//            }
-//       return bidders;
-//    }
+
 
 
 }

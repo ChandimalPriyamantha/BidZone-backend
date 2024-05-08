@@ -5,11 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
 public interface BidRepository extends JpaRepository<Bid,Integer> {
 
-    @Query(nativeQuery = true,value ="select * from bid where auction_id=:auction_id order by amount desc")
-    List<Bid> getBidsOnitem(@Param("auction_id")long auction_id);
+    @Query(nativeQuery = true, value="select max(amount) from bid where auction_id=:auction_id")
+    double getHighestBid(@Param("auction_id")long auction_id);
 
 }
