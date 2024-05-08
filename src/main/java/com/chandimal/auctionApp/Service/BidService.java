@@ -3,29 +3,31 @@ package com.chandimal.auctionApp.service;
 import com.chandimal.auctionApp.DTO.BidDTO;
 import com.chandimal.auctionApp.DTO.ResponseDTO;
 import com.chandimal.auctionApp.Util.VarList;
+import com.chandimal.auctionApp.dao.AuctionRepository;
 import com.chandimal.auctionApp.dao.BidRepository;
+import com.chandimal.auctionApp.entity.Auction;
 import com.chandimal.auctionApp.entity.Bid;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.Data;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-@Service
 @Transactional
-@AllArgsConstructor
-@NoArgsConstructor
-public class BidService  {
+@Service
+@Data
+public class BidService extends BidSubject{
+
 
     @Autowired
     private BidRepository bidRepository;
 
+    @Autowired
+    private AuctionRepository auctionRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -33,16 +35,32 @@ public class BidService  {
     @Autowired
     private ResponseDTO responseDTO;
 
+
+
+    private Optional<Auction> optionalauction;
+    private Auction auction;
+
+
+    public void addObserver(BidObserver observer) {
+        addObserver(observer);
+    }
+
+    public void removeObserver(BidObserver observer) {
+        removeObserver(observer);
+    }
+
+    @Async
     public CompletableFuture<ResponseDTO> placeBid(BidDTO bidDTO) {
         return CompletableFuture.supplyAsync(() -> {
+
             try {
-                synchronized (this) {
-                    bidRepository.save(modelMapper.map(bidDTO, Bid.class));
-                }
+                bidRepository.save(modelMapper.map(bidDTO,Bid.class));
+
                 responseDTO.setCode(VarList.RIP_SUCCESS);
                 responseDTO.setContent(bidDTO);
                 responseDTO.setMessage("Successfully added Bid");
             } catch (Exception e) {
+                System.out.println(e.getMessage());
                 responseDTO.setCode(VarList.RIP_ERROR);
                 responseDTO.setContent(bidDTO);
                 responseDTO.setMessage("Error adding Bid");
@@ -51,26 +69,34 @@ public class BidService  {
         });
     }
 
+    public CompletableFuture<Double> getHighestBid(long auction_id) {
+        return CompletableFuture.supplyAsync(() -> {
+
+            Double highest_bid = bidRepository.getHighestBid(auction_id);
 
 
+            optionalauction=auctionRepository.findById(auction_id);
 
-    public ResponseDTO getBidsOnITem(int auction_id)
-    {
-        try
-        {
-            List<Bid> bidList=bidRepository.getBidsOnitem(auction_id);
+            if (optionalauction.isPresent()) {
 
-            responseDTO.setCode(VarList.RIP_SUCCESS);
-            responseDTO.setContent(modelMapper.map(bidList,new TypeToken<ArrayList<Bid>>(){}.getType()));
-            responseDTO.setMessage("Successfully added Bid");
+                auction = optionalauction.get();
 
-        }catch (Exception e)
-        {
-            responseDTO.setCode(VarList.RIP_ERROR);
-            responseDTO.setContent(auction_id);
-            responseDTO.setMessage("Error adding Bid");
-        }
-        return responseDTO;
+                auction.setHighest_bid(highest_bid);
+                auctionRepository.save(auction);
+
+                notifyObservers(highest_bid);
+
+
+            }
+
+            return highest_bid;
+        });
     }
+
+
+
+
+
+
 
 }

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name="bid")
 public class Bid {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private double amount;
@@ -21,7 +21,7 @@ public class Bid {
 
     private String placed_at;
 
-    private int auction_id;
+    private Long auction_id;
 
     private String user_name;
 }
