@@ -37,4 +37,6 @@ public class Auction {
 
     @Column(name = "user_name")
     private String userName;
+
+
 }
