@@ -22,4 +22,6 @@ public class BidDTO
     private Long auction_id;
 
     private String user_name;
+
+    private int highest_id;
 }

@@ -1,4 +1,4 @@
-package com.chandimal.auctionApp.controller;
+package com.chandimal.auctionApp.Controller;
 
 
 import com.chandimal.auctionApp.requestmodels.AddAuctionRequest;

@@ -37,6 +37,15 @@ public class MyBidsController {
         return future.get();            // Waits for the async operation to complete
     }
 
+    //Get bid details for selected auction
+    @GetMapping("/getBidOnItem/{auction_id}")
+    public List<BidDTO> getBidOnItem(@PathVariable Integer auction_id) throws ExecutionException, InterruptedException{
+        Future<List<BidDTO>> future = myBidsService.getBidOnItem(auction_id);
+        return future.get();
+    }
+
+
+    //Delete selected bid
     @DeleteMapping("/deleteBid")
     public void deleteBid(@RequestBody BidDTO bidDTO){
         myBidsService.deleteBid(bidDTO);
