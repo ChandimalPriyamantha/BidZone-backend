@@ -1,15 +1,13 @@
-package com.chandimal.auctionApp.service;
+package com.chandimal.auctionApp.Service;
 
 
 import com.chandimal.auctionApp.DTO.BidDTO;
 import com.chandimal.auctionApp.DTO.ResponseDTO;
-import com.chandimal.auctionApp.Util.VarList;
 import com.chandimal.auctionApp.dao.MyBidsRepository;
 import com.chandimal.auctionApp.entity.Bid;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.modelmapper.internal.bytebuddy.description.method.MethodDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 @Service
