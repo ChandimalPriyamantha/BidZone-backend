@@ -25,7 +25,7 @@ public class AuctionDTO {
 
     private String category;
 
-    private byte[] img;
+    private String img;
 
     private String userName;
 
