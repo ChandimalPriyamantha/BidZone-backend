@@ -73,4 +73,12 @@ public class MyBidsService {
     }
 
 
+    @Async
+    //Get the highest Bid related to an auction
+    public Future<List<BidDTO>> highestBid(Integer auction_id){
+        List<Bid> highestBid= myBidsRepository.highestBid(auction_id);
+        return new AsyncResult<>(mp.map(highestBid,new TypeToken<ArrayList<BidDTO>>(){}.getType())) ;
+    }
+
+
 }
