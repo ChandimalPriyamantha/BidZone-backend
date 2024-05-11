@@ -1,10 +1,8 @@
-package com.chandimal.auctionApp.service;
+package com.chandimal.auctionApp.Service;
 
 import com.chandimal.auctionApp.DTO.AuctionDTO;
-import com.chandimal.auctionApp.DTO.BidDTO;
 import com.chandimal.auctionApp.dao.MyAuctionsRepository;
 import com.chandimal.auctionApp.entity.Auction;
-import com.chandimal.auctionApp.entity.Bid;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

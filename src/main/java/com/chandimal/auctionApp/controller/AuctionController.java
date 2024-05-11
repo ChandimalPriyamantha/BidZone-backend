@@ -1,9 +1,8 @@
 package com.chandimal.auctionApp.Controller;
 
 
+import com.chandimal.auctionApp.Service.AuctionService;
 import com.chandimal.auctionApp.requestmodels.AddAuctionRequest;
-import com.chandimal.auctionApp.requestmodels.NewListenerUpdates;
-import com.chandimal.auctionApp.service.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

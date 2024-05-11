@@ -16,8 +16,8 @@ public class NotificationController {
     @Autowired
     private BidService bidService;
 
-    @GetMapping("getNotification/{user_name}/{auction_id}")
-    public ResponseEntity getNewHighestBid(@PathVariable String user_name,@PathVariable int auction_id)
+    @GetMapping("/getNotification/{user_name}/{auction_id}")
+    public ResponseEntity getNewHighestBid(@PathVariable String user_name,@PathVariable Long auction_id)
     {
         ResponseDTO responseDTO=bidService.getNotification(user_name,auction_id);
         if (responseDTO.getCode().equals(VarList.RIP_SUCCESS))

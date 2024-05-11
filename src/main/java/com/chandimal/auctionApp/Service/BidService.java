@@ -1,4 +1,4 @@
-package com.chandimal.auctionApp.service;
+package com.chandimal.auctionApp.Service;
 
 import com.chandimal.auctionApp.DTO.BidDTO;
 import com.chandimal.auctionApp.DTO.ResponseDTO;
@@ -50,7 +50,7 @@ public class BidService  {
                 responseDTO.setContent(bidDTO);
                 responseDTO.setMessage("Successfully added Bid");
                 BidSubject newBid = new BidSubject(bidDTO.getAuction_id());
-                List<Bid> bids = bidRepository.getBidders(bidDTO.getAuction_id());
+                List<Bid> bids = bidRepository.getBidders(bidDTO.getAuction_id(),bidDTO.getUser_name());
 
                 for (Bid ele : bids) {
                     Bidder newBidder = new Bidder(notificationRepo);
@@ -66,7 +66,17 @@ public class BidService  {
                highest_bid.thenAccept(highestBidAmount -> {
                    // Compare the bid amount with the highest bid outside the callback
                     if (bidDTO.getAmount() == highestBidAmount) {
-                       // Notify observers if the bid amount is greater than the highest bid
+
+
+                        try
+                        {
+                            notificationRepo.deletePreviousNotification(bidDTO.getAuction_id());
+                        }catch (Exception e)
+                        {
+                            System.out.println("No data");
+                        }
+
+                        // Notify observers if the bid amount is greater than the highest bid
                         newBid.notifyObservers(bidDTO.getAuction_id(), highest_bid);
                    }
                });
@@ -98,7 +108,7 @@ public class BidService  {
         });
     }
 
-    public ResponseDTO getNotification(String user_name,int auction_id)
+    public ResponseDTO getNotification(String user_name,Long auction_id)
     {
         ResponseDTO responseDTO=new ResponseDTO();
         try

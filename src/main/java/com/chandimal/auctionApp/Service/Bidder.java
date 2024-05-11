@@ -1,4 +1,4 @@
-package com.chandimal.auctionApp.service;
+package com.chandimal.auctionApp.Service;
 
 import com.chandimal.auctionApp.dao.NotificationRepo;
 import com.chandimal.auctionApp.entity.Notification;
