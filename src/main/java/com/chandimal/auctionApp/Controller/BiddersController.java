@@ -1,6 +1,6 @@
-package com.chandimal.auctionApp.Controller;
+package com.chandimal.auctionApp.controller;
 
-import com.chandimal.auctionApp.Service.BidObserver;
+import com.chandimal.auctionApp.service.BidObserver;
 
 import java.util.concurrent.CompletableFuture;
 

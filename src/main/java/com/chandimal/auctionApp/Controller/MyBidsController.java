@@ -1,8 +1,8 @@
-package com.chandimal.auctionApp.Controller;
+package com.chandimal.auctionApp.controller;
 
 import com.chandimal.auctionApp.DTO.BidDTO;
 import com.chandimal.auctionApp.DTO.ResponseDTO;
-import com.chandimal.auctionApp.Service.MyBidsService;
+import com.chandimal.auctionApp.service.MyBidsService;
 import com.chandimal.auctionApp.Util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

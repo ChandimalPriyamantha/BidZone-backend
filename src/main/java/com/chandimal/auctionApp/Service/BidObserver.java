@@ -1,4 +1,4 @@
-package com.chandimal.auctionApp.Service;
+package com.chandimal.auctionApp.service;
 
 import java.util.concurrent.CompletableFuture;
 
