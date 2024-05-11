@@ -50,4 +50,12 @@ public class MyBidsController {
     public void deleteBid(@RequestBody BidDTO bidDTO){
         myBidsService.deleteBid(bidDTO);
     }
+
+    //Get the highest Bid related to an auction
+    @GetMapping("/highestBid/{auction_id}")
+    public List<BidDTO> highestBid(@PathVariable Integer auction_id) throws ExecutionException, InterruptedException {
+        Future<List<BidDTO>> future = myBidsService.highestBid(auction_id);
+        return future.get();
+
+    }
 }
