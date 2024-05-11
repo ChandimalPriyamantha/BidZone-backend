@@ -2,6 +2,7 @@ package com.chandimal.auctionApp.Controller;
 
 
 import com.chandimal.auctionApp.requestmodels.AddAuctionRequest;
+import com.chandimal.auctionApp.requestmodels.NewListenerUpdates;
 import com.chandimal.auctionApp.service.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +22,12 @@ public class AuctionController {
 
     // API endpoint to save new auction details.
     @PostMapping("/addAuction")
-    public void creatAuction(@RequestBody AddAuctionRequest addAuctionRequest){
+    public void creatAuction(@RequestBody AddAuctionRequest addAuctionRequest) throws Exception {
 
        auctionService.addAuction(addAuctionRequest); // To pass API data into the addAuction method that is created in AuctionService.
 
     }
+
 
 
 

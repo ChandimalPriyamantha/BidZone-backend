@@ -1,4 +1,4 @@
-package com.chandimal.auctionApp.Service;
+package com.chandimal.auctionApp.service;
 
 import org.springframework.stereotype.Component;
 

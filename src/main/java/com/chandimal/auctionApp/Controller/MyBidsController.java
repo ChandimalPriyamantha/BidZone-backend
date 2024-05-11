@@ -1,8 +1,8 @@
-package com.chandimal.auctionApp.Controller;
+package com.chandimal.auctionApp.controller;
 
 import com.chandimal.auctionApp.DTO.BidDTO;
 import com.chandimal.auctionApp.DTO.ResponseDTO;
-import com.chandimal.auctionApp.Service.MyBidsService;
+import com.chandimal.auctionApp.service.MyBidsService;
 import com.chandimal.auctionApp.Util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,5 +49,13 @@ public class MyBidsController {
     @DeleteMapping("/deleteBid")
     public void deleteBid(@RequestBody BidDTO bidDTO){
         myBidsService.deleteBid(bidDTO);
+    }
+
+    //Get the highest Bid related to an auction
+    @GetMapping("/highestBid/{auction_id}")
+    public List<BidDTO> highestBid(@PathVariable Integer auction_id) throws ExecutionException, InterruptedException {
+        Future<List<BidDTO>> future = myBidsService.highestBid(auction_id);
+        return future.get();
+
     }
 }
