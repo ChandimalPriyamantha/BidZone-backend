@@ -5,18 +5,23 @@ import com.chandimal.auctionApp.DTO.ResponseDTO;
 import com.chandimal.auctionApp.Util.VarList;
 import com.chandimal.auctionApp.dao.AuctionRepository;
 import com.chandimal.auctionApp.dao.BidRepository;
+import com.chandimal.auctionApp.dao.NotificationRepo;
 import com.chandimal.auctionApp.entity.Auction;
 import com.chandimal.auctionApp.entity.Bid;
+import com.chandimal.auctionApp.entity.Notification;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-public class BidService extends BidSubject {
+@Transactional
+public class BidService  {
 
     @Autowired
     private BidRepository bidRepository;
@@ -27,7 +32,8 @@ public class BidService extends BidSubject {
     @Autowired
     private ModelMapper modelMapper;
 
-
+    @Autowired
+    private NotificationRepo notificationRepo;
 
     private Optional<Auction> optionalAuction;
 
@@ -43,9 +49,27 @@ public class BidService extends BidSubject {
                 responseDTO.setCode(VarList.RIP_SUCCESS);
                 responseDTO.setContent(bidDTO);
                 responseDTO.setMessage("Successfully added Bid");
+                BidSubject newBid = new BidSubject(bidDTO.getAuction_id());
+                List<Bid> bids = bidRepository.getBidders(bidDTO.getAuction_id());
 
+                for (Bid ele : bids) {
+                    Bidder newBidder = new Bidder(notificationRepo);
+                    newBidder.setUser_name(ele.getUser_name());
+                    newBid.addObserver(newBidder);
+                }
 
+                // Asynchronously retrieve the highest bid for the auction
+                CompletableFuture<Double> highest_bid = getHighestBid(bidDTO.getAuction_id());
+                System.out.println(highest_bid);
 
+               // Perform actions when the highest bid retrieval is complete
+               highest_bid.thenAccept(highestBidAmount -> {
+                   // Compare the bid amount with the highest bid outside the callback
+                    if (bidDTO.getAmount() == highestBidAmount) {
+                       // Notify observers if the bid amount is greater than the highest bid
+                        newBid.notifyObservers(bidDTO.getAuction_id(), highest_bid);
+                   }
+               });
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -72,5 +96,25 @@ public class BidService extends BidSubject {
             }
             return highest_bid;
         });
+    }
+
+    public ResponseDTO getNotification(String user_name,int auction_id)
+    {
+        ResponseDTO responseDTO=new ResponseDTO();
+        try
+        {
+
+            Notification notification=notificationRepo.getHighestBidNotification(user_name,auction_id);
+            responseDTO.setCode(VarList.RIP_SUCCESS);
+            responseDTO.setContent(notification);
+            responseDTO.setMessage("successful");
+
+        }catch (Exception e)
+        {
+            responseDTO.setCode(VarList.RIP_ERROR);
+            responseDTO.setContent(null);
+            responseDTO.setMessage("unsuccessful");
+        }
+        return responseDTO;
     }
 }
