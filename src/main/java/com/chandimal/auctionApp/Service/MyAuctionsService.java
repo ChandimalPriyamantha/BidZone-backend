@@ -1,4 +1,4 @@
-package com.chandimal.auctionApp.service;
+package com.chandimal.auctionApp.Service;
 
 import com.chandimal.auctionApp.DTO.AuctionDTO;
 import com.chandimal.auctionApp.DTO.BidDTO;
