@@ -2,9 +2,14 @@ package com.chandimal.auctionApp.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-public class BidSubject {
-    private List<BidObserver> observers = new ArrayList<>();
+
+public abstract class BidSubject {
+
+     List<BidObserver> observers = new ArrayList<>();
+
+
 
     public void addObserver(BidObserver observer) {
         observers.add(observer);
@@ -14,7 +19,7 @@ public class BidSubject {
         observers.remove(observer);
     }
 
-    public void notifyObservers(double highestBid) {
+    public void notifyObservers(CompletableFuture<Double> highestBid) {
         for (BidObserver observer : observers) {
             observer.updateHighestBid(highestBid);
         }

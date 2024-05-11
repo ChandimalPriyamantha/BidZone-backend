@@ -18,9 +18,7 @@ import java.util.concurrent.ExecutionException;
 public class BidController {
 
     @Autowired
-    private BidService bidService;
-
-
+    BidService bidService;
 
     @PostMapping("placeBid")
     public ResponseEntity placeBid(@RequestBody BidDTO bidDTO) throws  ExecutionException, InterruptedException {
