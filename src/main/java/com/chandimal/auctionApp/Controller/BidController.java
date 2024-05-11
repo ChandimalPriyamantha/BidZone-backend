@@ -20,8 +20,12 @@ public class BidController {
     @Autowired
     private BidService bidService;
 
+
+
     @PostMapping("placeBid")
-    public ResponseEntity placeBid(@RequestBody BidDTO bidDTO) throws ExecutionException, InterruptedException {
+    public ResponseEntity placeBid(@RequestBody BidDTO bidDTO) throws  ExecutionException, InterruptedException {
+
+
         CompletableFuture<ResponseDTO> futureresponse=bidService.placeBid(bidDTO);
         ResponseDTO response=futureresponse.get();
         if(response.getCode().equals(VarList.RIP_SUCCESS))
@@ -32,19 +36,14 @@ public class BidController {
         {
             return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
         }
+
     }
 
-    @GetMapping("/getBidOnItem/{auction_id}")
-    public ResponseEntity getBidOnItem(@PathVariable int auction_id)
-    {
-        ResponseDTO responseDTO=bidService.getBidsOnITem(auction_id);
-        if(responseDTO.getCode().equals(VarList.RIP_SUCCESS))
-        {
-            return new ResponseEntity(responseDTO, HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
-        }
-    }
+   @GetMapping("/getHighestBid/{auction_id}")
+    public ResponseEntity getHighestBid(@PathVariable Long auction_id) throws ExecutionException, InterruptedException {
+       CompletableFuture<Double> highest_bid=bidService.getHighestBid(auction_id);
+       return new ResponseEntity( highest_bid.get(),HttpStatus.OK);
+   }
+
+
 }

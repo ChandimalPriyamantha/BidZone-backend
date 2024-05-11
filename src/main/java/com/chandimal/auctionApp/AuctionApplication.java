@@ -16,4 +16,7 @@ public class AuctionApplication {
 	{
 		return new ModelMapper();
 	}
+
+
+
 }

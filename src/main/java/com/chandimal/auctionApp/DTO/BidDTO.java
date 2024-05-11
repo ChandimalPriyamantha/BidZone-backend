@@ -19,7 +19,7 @@ public class BidDTO
 
     private String placed_at;
 
-    private int auction_id;
+    private Long auction_id;
 
     private String user_name;
 
