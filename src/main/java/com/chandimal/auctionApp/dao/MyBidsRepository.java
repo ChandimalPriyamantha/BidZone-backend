@@ -11,4 +11,9 @@ public interface MyBidsRepository extends JpaRepository<Bid,Integer> {
     //Get all bids of selected user
     @Query(nativeQuery = true, value = "select auction.user_name, auction.name, bid.*, auction.img from bid inner join auction on auction.id= bid.auction_id where bid.user_name=:user_name")
     List<Object> getMyBids(String user_name);
+
+
+    //Get all bids related to an auction
+    @Query(nativeQuery = true, value = "select * from bid where auction_id=:auction_id")
+    List<Bid> getBidOnItem(Integer auction_id);
 }

@@ -8,12 +8,16 @@ import com.chandimal.auctionApp.dao.MyBidsRepository;
 import com.chandimal.auctionApp.entity.Bid;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.modelmapper.internal.bytebuddy.description.method.MethodDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 @Service
@@ -51,6 +55,13 @@ public class MyBidsService {
 
     }
 
+    //Get all bids related to an auction
+    @Async
+    public Future<List<BidDTO>> getBidOnItem(Integer auction_id){
+        List<Bid> bidList= myBidsRepository.getBidOnItem(auction_id);
+        return new AsyncResult<>(mp.map(bidList,new TypeToken<ArrayList<BidDTO>>(){}.getType()));
+    }
+
 
     //delete bid
     @Async
@@ -60,4 +71,6 @@ public class MyBidsService {
         }
 
     }
+
+
 }

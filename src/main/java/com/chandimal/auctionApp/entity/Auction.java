@@ -39,4 +39,5 @@ public class Auction {
     private String userName;
 
     private double highest_bid;
+
 }
