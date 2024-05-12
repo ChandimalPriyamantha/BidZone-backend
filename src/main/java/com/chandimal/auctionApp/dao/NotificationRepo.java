@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NotificationRepo extends JpaRepository<Notification,Integer> {
 
-    @Query(nativeQuery = true, value = "select * from notification where user_name=:user_name and auction_id=:auction_id")
+    @Query(nativeQuery = true, value = "select * from notification where bidder_name=:user_name and auction_id=:auction_id")
     Notification getHighestBidNotification(@Param("user_name") String user_name, @Param("auction_id") Long auction_id);
 
     @Modifying

@@ -115,9 +115,19 @@ public class BidService  {
         {
 
             Notification notification=notificationRepo.getHighestBidNotification(user_name,auction_id);
-            responseDTO.setCode(VarList.RIP_SUCCESS);
-            responseDTO.setContent(notification);
-            responseDTO.setMessage("successful");
+            if(notification!=null)
+            {
+                responseDTO.setCode(VarList.RIP_SUCCESS);
+                responseDTO.setContent(notification);
+                responseDTO.setMessage("successful");
+            }
+            else
+            {
+                responseDTO.setCode(VarList.RIP_SUCCESS);
+                responseDTO.setContent(notification);
+                responseDTO.setMessage("successful");
+            }
+
 
         }catch (Exception e)
         {
